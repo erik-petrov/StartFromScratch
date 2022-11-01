@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 
-namespace bruh.Models
+namespace StartFromScratch.Models
 {
     /*public abstract class Human
     {

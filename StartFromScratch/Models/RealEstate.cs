@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualBasic;
 using System.Net;
 
-namespace bruh.Models
+namespace StartFromScratch.Models
 {
     public enum PaymentType
     {
@@ -34,6 +34,7 @@ namespace bruh.Models
         {
             PaymentType = paymentType;
         }
+        public Rent() { }
         public DateInterval Length { get; set; }
 
         public PaymentType PaymentType { get; set; }
@@ -45,5 +46,6 @@ namespace bruh.Models
         {
             LastRestoration = lastRestoration;
         }
+        public Buy() { }
     }
 }

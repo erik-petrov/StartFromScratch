@@ -72,7 +72,7 @@ namespace StartFromScratch.Data.Migrations
                     b.ToTable("AspNetRoleClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.StartFromScratch", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");

@@ -1,4 +1,4 @@
-﻿using bruh.Models;
+﻿using StartFromScratch.Models;
 using System.Diagnostics;
 
 namespace bruh.Database

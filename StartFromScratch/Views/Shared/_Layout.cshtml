@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@using StartFromScratch.Areas.Identity.Data;
+@inject SignInManager<StartFromScratchUser> SignInManager
+@inject UserManager<StartFromScratchUser> UserManager
 
 <!DOCTYPE html>
 <html lang="en">
