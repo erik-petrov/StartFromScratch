@@ -1,0 +1,43 @@
+﻿@model IEnumerable<StartFromScratch.Models.RealEstate>
+
+@{
+    ViewData["Title"] = "Kinnisvarad";
+}
+
+<h1>Kinnisvarad</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Area)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cost)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Area)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cost)
+            </td>
+            <td>
+                <a asp-action="Rentida" asp-route-id="@item.Id">Rentida</a> |
+                <a asp-action="Osta" asp-route-id="@item.Id">Osta</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

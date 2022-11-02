@@ -1,0 +1,53 @@
+﻿@model StartFromScratch.Models.Buy
+
+@{
+    ViewData["Title"] = "Osta";
+}
+
+<h1>Osta</h1>
+<div>
+    <h4>Tahate seda kinnisvara osta?</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Area)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Area)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Cost)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Cost)
+        </dd>
+    </dl>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Osta">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="ChildrenAmount" class="control-label"></label>
+                <input asp-for="ChildrenAmount" class="form-control" />
+                <span asp-validation-for="ChildrenAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Details" class="control-label"></label>
+                <input asp-for="Details" class="form-control" />
+                <span asp-validation-for="Details" class="text-danger"></span>
+            </div>
+            <input type="hidden" value="model.Id" />
+            <div class="form-group">
+                <input type="submit" value="Osta" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

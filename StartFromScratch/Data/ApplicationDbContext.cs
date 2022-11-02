@@ -10,6 +10,8 @@ namespace StartFromScratch.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+            //Database.EnsureDeleted();
+            //Database.EnsureCreated();
         }
         protected override void ConfigureConventions(ModelConfigurationBuilder builder)
         {

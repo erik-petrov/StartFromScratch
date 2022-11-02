@@ -1,0 +1,36 @@
+﻿@model StartFromScratch.Models.RealEstate
+
+@{
+    ViewData["Title"] = "Rentida";
+}
+
+<h1>Rentida</h1>
+
+<div>
+    <h4>Tahate seda kinnisvara rentida?</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Area)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Area)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Cost)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Cost)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Rentida" asp-route-id="@Model?.Id">Rentida</a> |
+    <a asp-action="UserIndex">Tagasi</a>
+</div>

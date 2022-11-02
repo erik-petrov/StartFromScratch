@@ -14,8 +14,10 @@ namespace bruh.Database
 
             var estates = new RealEstate[]
             {
-            new RealEstate{Address="asdasd", Area=60f, Cost=600},
-            new RealEstate{Address="dasdasdas", Area=120f, Cost=1200},
+            new RealEstate{Address="House 1", Area=60f, Cost=600},
+            new RealEstate{Address="House 2", Area=120f, Cost=1200},
+            new RealEstate{Address="House 3", Area=120f, Cost=1200},
+            new RealEstate{Address="House 4", Area=120f, Cost=1200},
             };
             foreach (RealEstate c in estates)
             {

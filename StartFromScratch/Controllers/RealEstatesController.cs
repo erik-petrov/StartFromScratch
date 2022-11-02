@@ -26,6 +26,19 @@ namespace StartFromScratch.Controllers
             return View(await _context.RealEstates.ToListAsync());
         }
 
+        public async Task<IActionResult> UserIndex()
+        {
+            List<int> ids = new List<int>();
+            await _context.Buys.ForEachAsync(x => ids.Add(x.Id));
+            return View(await _context.RealEstates.Where(x => !ids.Contains(x.Id)).ToListAsync());
+        }
+        public async Task<IActionResult> MinuVarad()
+        {
+            List<int> ids = new List<int>();
+            await _context.Buys.ForEachAsync(x => ids.Add(x.Id));
+            return View(await _context.RealEstates.Where(x => !ids.Contains(x.Id)).ToListAsync());
+        }
+
         // GET: RealEstates/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -42,6 +55,37 @@ namespace StartFromScratch.Controllers
             }
 
             return View(realEstate);
+        }public async Task<IActionResult> Rentida(int? id)
+        {
+            if (id == null || _context.RealEstates == null)
+            {
+                return NotFound();
+            }
+
+            var realEstate = await _context.RealEstates
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (realEstate == null)
+            {
+                return NotFound();
+            }
+
+            return View(realEstate);
+        }
+        public async Task<IActionResult> Osta(int? id)
+        {
+            if (id == null || _context.RealEstates == null)
+            {
+                return NotFound();
+            }
+
+            var realEstate = await _context.RealEstates
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (realEstate == null)
+            {
+                return NotFound();
+            }
+            var buy = new Buy(realEstate, 0, "");
+            return View(buy);
         }
 
         // GET: RealEstates/Create
@@ -152,6 +196,42 @@ namespace StartFromScratch.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+        [HttpPost, ActionName("Rentida")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Rentida(int id)
+        {
+            if (_context.RealEstates == null)
+            {
+                return Problem("Entity set 'ApplicationContext.RealEstates'  is null.");
+            }
+            var realEstate = await _context.RealEstates.FindAsync(id);
+            if (realEstate != null)
+            {
+                _context.RealEstates.Remove(realEstate);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost, ActionName("Osta")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Osta(int id, string details, int children)
+        {
+            if (_context.RealEstates == null)
+            {
+                return Problem("Entity set 'ApplicationContext.RealEstates'  is null.");
+            }
+            var realEstate = await _context.RealEstates.FindAsync(id);
+            if (realEstate != null)
+            {
+                _context.RealEstates.Remove(realEstate);
+                Buy b = new Buy(realEstate, children, details);
+                _context.Buys.Add(b);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(UserIndex));
         }
 
         private bool RealEstateExists(int id)

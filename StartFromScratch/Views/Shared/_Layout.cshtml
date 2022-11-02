@@ -27,7 +27,10 @@
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="RealEstates" asp-action="Index">Kinnisvarad</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="RealEstates" asp-action="UserIndex">Kinnisvarad</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="RealEstates" asp-action="MinuVarad">Minu kinnisvarad</a>
                             </li>
                         }
                     </ul>
