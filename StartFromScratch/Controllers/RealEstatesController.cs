@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using bruh.Database;
 using StartFromScratch.Models;
+using NuGet.Packaging.Signing;
 
 namespace StartFromScratch.Controllers
 {
@@ -20,6 +21,14 @@ namespace StartFromScratch.Controllers
             _context = db;
         }
 
+        async Task<List<int>> getIds()
+        {
+            List<int> ids = new List<int>();
+            await _context.Buys.ForEachAsync(x => ids.Add(x.Id));
+            await _context.Rents.ForEachAsync(x => ids.Add(x.Id));
+            return ids;
+        }
+
         // GET: RealEstates
         public async Task<IActionResult> Index()
         {
@@ -28,19 +37,34 @@ namespace StartFromScratch.Controllers
 
         public async Task<IActionResult> UserIndex()
         {
-            List<int> ids = new List<int>();
-            await _context.Buys.ForEachAsync(x => ids.Add(x.Id));
+            var ids = await getIds();
             return View(await _context.RealEstates.Where(x => !ids.Contains(x.Id)).ToListAsync());
         }
         public async Task<IActionResult> MinuVarad()
         {
-            List<int> ids = new List<int>();
-            await _context.Buys.ForEachAsync(x => ids.Add(x.Id));
-            return View(await _context.RealEstates.Where(x => !ids.Contains(x.Id)).ToListAsync());
+            var ids = await getIds();
+            return View(await _context.RealEstates.Where(x => ids.Contains(x.Id)).ToListAsync());
+        }
+        public async Task<IActionResult> Detaalid(int? id)
+        {
+            if (id == null || _context.RealEstates == null)
+            {
+                return NotFound();
+            }
+
+            var realEstate = await _context.RealEstates
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (realEstate == null)
+            {
+                return NotFound();
+            }
+
+            return View(realEstate);
         }
 
-        // GET: RealEstates/Details/5
-        public async Task<IActionResult> Details(int? id)
+
+            // GET: RealEstates/Details/5
+            public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.RealEstates == null)
             {
@@ -68,8 +92,8 @@ namespace StartFromScratch.Controllers
             {
                 return NotFound();
             }
-
-            return View(realEstate);
+            var rent = new Rent(realEstate, PaymentType.Daily, DateTime.Now, DateTime.Now);
+            return View(rent);
         }
         public async Task<IActionResult> Osta(int? id)
         {
@@ -199,20 +223,26 @@ namespace StartFromScratch.Controllers
         }
         [HttpPost, ActionName("Rentida")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Rentida(int id)
+        public async Task<IActionResult> Rentida(int id, int payment, DateTime from, DateTime until)
         {
             if (_context.RealEstates == null)
             {
                 return Problem("Entity set 'ApplicationContext.RealEstates'  is null.");
             }
+            if(!(DateTime.Compare(from, until) < 0))
+            {
+                return RedirectToAction(nameof(UserIndex));
+            }
             var realEstate = await _context.RealEstates.FindAsync(id);
             if (realEstate != null)
             {
+                System.Diagnostics.Debug.WriteLine("real estate exists");
                 _context.RealEstates.Remove(realEstate);
+                Rent r = new(realEstate, (PaymentType)payment, from, until);
+                _context.Rents.Add(r);
             }
-
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(UserIndex));
         }
         [HttpPost, ActionName("Osta")]
         [ValidateAntiForgeryToken]
@@ -225,8 +255,9 @@ namespace StartFromScratch.Controllers
             var realEstate = await _context.RealEstates.FindAsync(id);
             if (realEstate != null)
             {
+                System.Diagnostics.Debug.WriteLine("real estate exists");
                 _context.RealEstates.Remove(realEstate);
-                Buy b = new Buy(realEstate, children, details);
+                Buy b = new(realEstate, children, details);
                 _context.Buys.Add(b);
             }
 

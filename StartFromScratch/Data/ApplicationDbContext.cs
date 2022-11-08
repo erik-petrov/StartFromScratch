@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StartFromScratch.Areas.Identity.Data;
+using StartFromScratch.Models;
 
 namespace StartFromScratch.Data
 {
@@ -23,6 +24,7 @@ namespace StartFromScratch.Data
             base.ConfigureConventions(builder);
 
         }
+        public DbSet<StartFromScratch.Models.Agent> Agent { get; set; }
     }
     public class DateOnlyConverter : ValueConverter<DateOnly, DateTime>
     {

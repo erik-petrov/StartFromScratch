@@ -1,4 +1,4 @@
-﻿@model StartFromScratch.Models.RealEstate
+﻿@model StartFromScratch.Models.Rent
 
 @{
     ViewData["Title"] = "Rentida";
@@ -30,7 +30,33 @@
         </dd>
     </dl>
 </div>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Rentida">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                @Html.DropDownList("enumlist1", Enum.GetValues(typeof(PaymentType))
+                .Cast<PaymentType>()
+    .Select(e => new SelectListItem() { Value = e.ToString(), Text = e.GetDisplayName() }))
+            </div>
+            <div class="form-group">
+                <label asp-for="From" class="control-label"></label>
+                <input asp-for="From" class="form-control" />
+                <span asp-validation-for="From" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Until" class="control-label"></label>
+                <input asp-for="Until" class="form-control" />
+                <span asp-validation-for="Until" class="text-danger"></span>
+            </div>
+            <input type="hidden" value="model.Id" />
+            <div class="form-group">
+                <input type="submit" value="Rentida" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
 <div>
-    <a asp-action="Rentida" asp-route-id="@Model?.Id">Rentida</a> |
     <a asp-action="UserIndex">Tagasi</a>
 </div>

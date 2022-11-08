@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StartFromScratch.Data;
 
@@ -11,9 +12,10 @@ using StartFromScratch.Data;
 namespace StartFromScratch.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221108073237_make_image")]
+    partial class make_image
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -230,38 +232,6 @@ namespace StartFromScratch.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("StartFromScratch.Models.Agent", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("YearsInField")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Agent");
-                });
-
             modelBuilder.Entity("StartFromScratch.Models.Buy", b =>
                 {
                     b.Property<int>("Id")
@@ -319,21 +289,18 @@ namespace StartFromScratch.Data.Migrations
                     b.Property<float>("Cost")
                         .HasColumnType("real");
 
-                    b.Property<DateTime>("From")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("ImageLink")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Length")
+                        .HasColumnType("int");
 
                     b.Property<int>("PaymentType")
                         .HasColumnType("int");
 
                     b.Property<string>("StartFromScratchUserId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("Until")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

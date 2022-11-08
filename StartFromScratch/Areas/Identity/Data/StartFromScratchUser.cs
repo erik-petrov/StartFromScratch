@@ -12,8 +12,7 @@ namespace StartFromScratch.Areas.Identity.Data;
 public class StartFromScratchUser : IdentityUser
 {
     [PersonalData]
-    [AllowNull]
-    public string FullName { get; set; }
+    public string? FullName { get; set; }
     [PersonalData]
     public DateTime RegisterDate { get; set; } = DateTime.Now;
     public List<Buy> Bought { get; set; } = new List<Buy>();
