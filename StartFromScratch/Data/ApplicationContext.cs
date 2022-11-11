@@ -10,6 +10,7 @@ namespace bruh.Database
         public DbSet<RealEstate> RealEstates => Set<RealEstate>();
         public DbSet<Buy> Buys => Set<Buy>();
         public DbSet<Rent> Rents => Set<Rent>();
+        public DbSet<Consultation> Consultations => Set<Consultation>();
         public ApplicationContext()
         {
             //Database.EnsureDeleted();

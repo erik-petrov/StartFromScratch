@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using bruh.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,28 +13,49 @@ namespace StartFromScratch.Controllers
 {
     public class AgentsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationContext _context;
 
-        public AgentsController(ApplicationDbContext context)
+        public AgentsController(ApplicationContext context)
         {
+            ApplicationContext db = new ApplicationContext();
             _context = context;
+        }
+
+        public async Task<IActionResult> UserIndex()
+        {
+            return View(await _context.Agents.ToListAsync());
+        }
+        public async Task<IActionResult> Consultation(int? id)
+        {
+            if (id == null || _context.Consultations == null)
+            {
+                return NotFound();
+            }
+
+            var cons = await _context.Consultations.FirstOrDefaultAsync(m => m.Id == id);
+            if (cons == null)
+            {
+                return NotFound();
+            }
+
+            return View(cons);
         }
 
         // GET: Agents
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Agent.ToListAsync());
+            return View(await _context.Agents.ToListAsync());
         }
 
         // GET: Agents/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Agent == null)
+            if (id == null || _context.Agents == null)
             {
                 return NotFound();
             }
 
-            var agent = await _context.Agent
+            var agent = await _context.Agents
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (agent == null)
             {
@@ -68,12 +90,12 @@ namespace StartFromScratch.Controllers
         // GET: Agents/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Agent == null)
+            if (id == null || _context.Agents == null)
             {
                 return NotFound();
             }
 
-            var agent = await _context.Agent.FindAsync(id);
+            var agent = await _context.Agents.FindAsync(id);
             if (agent == null)
             {
                 return NotFound();
@@ -119,12 +141,12 @@ namespace StartFromScratch.Controllers
         // GET: Agents/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Agent == null)
+            if (id == null || _context.Agents == null)
             {
                 return NotFound();
             }
 
-            var agent = await _context.Agent
+            var agent = await _context.Agents
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (agent == null)
             {
@@ -139,14 +161,14 @@ namespace StartFromScratch.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Agent == null)
+            if (_context.Agents == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Agent'  is null.");
             }
-            var agent = await _context.Agent.FindAsync(id);
+            var agent = await _context.Agents.FindAsync(id);
             if (agent != null)
             {
-                _context.Agent.Remove(agent);
+                _context.Agents.Remove(agent);
             }
 
             await _context.SaveChangesAsync();
@@ -155,7 +177,7 @@ namespace StartFromScratch.Controllers
 
         private bool AgentExists(int id)
         {
-            return _context.Agent.Any(e => e.Id == id);
+            return _context.Agents.Any(e => e.Id == id);
         }
     }
 }

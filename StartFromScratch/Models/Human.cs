@@ -88,7 +88,7 @@ namespace StartFromScratch.Models
         public int YearsInField { get; set; }
         public bool IsAvailable() => throw new NotImplementedException();
     }
-        public class Consultation
+    public class Consultation
     {
         public Consultation(DateTime startTime, DateTime endTime, DateOnly date, Agent agent, User user, string description)
         {
@@ -99,8 +99,9 @@ namespace StartFromScratch.Models
             User = user;
             Description = description;
         }
+        public Consultation() {}
 
-        protected int Id { get; set; }
+        public int Id { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public DateOnly Date { get; set; }

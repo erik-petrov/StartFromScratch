@@ -25,7 +25,11 @@ namespace bruh.Database
             }
             context.SaveChanges();
 
-            context.Agents.Add(new Agent { Email = "Email@email.com", FullName = "AMogus AMogusovich", Password = "123132", Phone = "+372561231231", YearsInField = 7 });
+            context.Agents.Add(new Agent { Email = "Email@email.com",
+                FullName = "AMogus AMogusovich",
+                Password = "123132",
+                Phone = "+372561231231",
+                YearsInField = 7});
 
             context.SaveChanges();
         }
