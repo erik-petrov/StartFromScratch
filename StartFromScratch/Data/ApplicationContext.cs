@@ -1,6 +1,7 @@
 ﻿using StartFromScratch.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace bruh.Database
 {
@@ -16,7 +17,13 @@ namespace bruh.Database
             //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
-
+        public static IEnumerable<SelectListItem> GetAgents()
+        {
+            ApplicationContext db = new ApplicationContext();
+            List<SelectListItem> list = new List<SelectListItem>();
+            db.Agents.ForEachAsync(e => list.Add(new SelectListItem { Text = e.FullName, Value = e.Id.ToString() }));
+            return list;
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=bruh.db");

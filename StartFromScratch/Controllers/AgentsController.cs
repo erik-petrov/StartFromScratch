@@ -15,10 +15,10 @@ namespace StartFromScratch.Controllers
     {
         private readonly ApplicationContext _context;
 
-        public AgentsController(ApplicationContext context)
+        public AgentsController()
         {
             ApplicationContext db = new ApplicationContext();
-            _context = context;
+            _context = db;
         }
 
         public async Task<IActionResult> UserIndex()
@@ -39,6 +39,15 @@ namespace StartFromScratch.Controllers
             }
 
             return View(cons);
+        }
+        public async Task<IActionResult> ConsultationForm()
+        {
+            return View();
+        }
+        public async Task<IActionResult> SendConsultationForm([Bind("StartTime, EndTime, Agent, Description")] Consultation cons)
+        {
+            //bruh
+            return View();
         }
 
         // GET: Agents

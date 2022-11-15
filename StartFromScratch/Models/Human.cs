@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using bruh.Database;
+using System.Xml.Linq;
 
 namespace StartFromScratch.Models
 {
