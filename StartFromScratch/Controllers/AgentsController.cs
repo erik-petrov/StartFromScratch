@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using bruh.Database;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -51,12 +52,14 @@ namespace StartFromScratch.Controllers
         }
 
         // GET: Agents
+        [Authorize(Policy = "adminOnly")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Agents.ToListAsync());
         }
 
         // GET: Agents/Details/5
+        [Authorize(Policy = "adminOnly")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Agents == null)
@@ -75,6 +78,7 @@ namespace StartFromScratch.Controllers
         }
 
         // GET: Agents/Create
+        [Authorize(Policy = "adminOnly")]
         public IActionResult Create()
         {
             return View();
@@ -85,6 +89,7 @@ namespace StartFromScratch.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "adminOnly")]
         public async Task<IActionResult> Create([Bind("Id,FullName,Email,Phone,Password,YearsInField")] Agent agent)
         {
             if (ModelState.IsValid)
@@ -97,6 +102,7 @@ namespace StartFromScratch.Controllers
         }
 
         // GET: Agents/Edit/5
+        [Authorize(Policy = "adminOnly")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Agents == null)
@@ -117,6 +123,7 @@ namespace StartFromScratch.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "adminOnly")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,Email,Phone,Password,YearsInField")] Agent agent)
         {
             if (id != agent.Id)
@@ -148,6 +155,7 @@ namespace StartFromScratch.Controllers
         }
 
         // GET: Agents/Delete/5
+        [Authorize(Policy = "adminOnly")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Agents == null)
@@ -168,6 +176,7 @@ namespace StartFromScratch.Controllers
         // POST: Agents/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "adminOnly")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Agents == null)

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using StartFromScratch.Areas.Identity.Data;
 using StartFromScratch.Data;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,9 +13,18 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<StartFromScratchUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddIdentity<StartFromScratchUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+.AddDefaultUI()
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders();
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
+
+builder.Services.AddAuthorization(options => {
+    options.AddPolicy("adminOnly",
+    builder => builder.RequireRole("Admin"));
+});
 
 var app = builder.Build();
 

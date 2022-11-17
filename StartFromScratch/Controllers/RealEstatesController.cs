@@ -8,6 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using bruh.Database;
 using StartFromScratch.Models;
 using NuGet.Packaging.Signing;
+using Microsoft.AspNetCore.Authorization;
+using System.Net.Mail;
+using System.Net;
+using System.Net.Http;
 
 namespace StartFromScratch.Controllers
 {
@@ -30,6 +34,7 @@ namespace StartFromScratch.Controllers
         }
 
         // GET: RealEstates
+        [Authorize(Policy = "adminOnly")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.RealEstates.ToListAsync());
@@ -63,8 +68,9 @@ namespace StartFromScratch.Controllers
         }
 
 
-            // GET: RealEstates/Details/5
-            public async Task<IActionResult> Details(int? id)
+        // GET: RealEstates/Details/5
+        [Authorize(Policy = "adminOnly")]
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.RealEstates == null)
             {
@@ -113,6 +119,7 @@ namespace StartFromScratch.Controllers
         }
 
         // GET: RealEstates/Create
+        [Authorize(Policy = "adminOnly")]
         public IActionResult Create()
         {
             return View();
@@ -121,6 +128,7 @@ namespace StartFromScratch.Controllers
         // POST: RealEstates/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Policy = "adminOnly")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Address,Area,Cost")] RealEstate realEstate)
@@ -135,6 +143,7 @@ namespace StartFromScratch.Controllers
         }
 
         // GET: RealEstates/Edit/5
+        [Authorize(Policy = "adminOnly")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.RealEstates == null)
@@ -155,6 +164,7 @@ namespace StartFromScratch.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "adminOnly")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Address,Area,Cost")] RealEstate realEstate)
         {
             if (id != realEstate.Id)
@@ -186,6 +196,7 @@ namespace StartFromScratch.Controllers
         }
 
         // GET: RealEstates/Delete/5
+        [Authorize(Policy = "adminOnly")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.RealEstates == null)
@@ -206,6 +217,7 @@ namespace StartFromScratch.Controllers
         // POST: RealEstates/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "adminOnly")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.RealEstates == null)
@@ -241,12 +253,13 @@ namespace StartFromScratch.Controllers
                 Rent r = new(realEstate, (PaymentType)payment, from, until);
                 _context.Rents.Add(r);
             }
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(UserIndex));
         }
         [HttpPost, ActionName("Osta")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Osta(int id, string details, int children)
+        public async Task<IActionResult> Osta(int id, string details, int children, string email)
         {
             if (_context.RealEstates == null)
             {
@@ -260,7 +273,7 @@ namespace StartFromScratch.Controllers
                 Buy b = new(realEstate, children, details);
                 _context.Buys.Add(b);
             }
-
+            sendEmail("You've bought a house!", $"Congratulations on your newly bought house with an area of: {realEstate.Area} at {realEstate.Address}!", User.Identity.Name);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(UserIndex));
         }
@@ -268,6 +281,28 @@ namespace StartFromScratch.Controllers
         private bool RealEstateExists(int id)
         {
             return _context.RealEstates.Any(e => e.Id == id);
+        }
+        private void sendEmail(string Subject, string Body, string recipient)
+        {
+            try
+            {
+                using (SmtpClient client = new SmtpClient("smtp.gmail.com") { Port = 587, Credentials = new NetworkCredential(username, password), EnableSsl = true })
+                {
+                    var mailMessage = new MailMessage
+                    {
+                        From = new MailAddress("amogusSussyemail@gmail.com"),
+                        Subject = Subject,
+                        Body = Body,
+                        IsBodyHtml = true,
+                    };
+                    mailMessage.To.Add(recipient);
+                    client.Send(mailMessage);
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }
