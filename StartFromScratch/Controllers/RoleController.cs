@@ -5,29 +5,18 @@ namespace StartFromScratch.Controllers
 {
     public class RoleController : Controller
     {
-        RoleManager<IdentityRole> roleManager;
-
-        public RoleController(RoleManager<IdentityRole> roleManager)
+        private RoleManager<IdentityRole> roleManager;
+        public RoleController(RoleManager<IdentityRole> roleMgr)
         {
-            this.roleManager = roleManager;
+            roleManager = roleMgr;
         }
 
-        public IActionResult Index()
-        {
-            var roles = roleManager.Roles.ToList();
-            return View(roles);
-        }
+        public ViewResult Index() => View(roleManager.Roles);
 
-        public IActionResult Create()
+        private void Errors(IdentityResult result)
         {
-            return View(new IdentityRole());
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(IdentityRole role)
-        {
-            await roleManager.CreateAsync(role);
-            return RedirectToAction("Index");
+            foreach (IdentityError error in result.Errors)
+                ModelState.AddModelError("", error.Description);
         }
     }
 }

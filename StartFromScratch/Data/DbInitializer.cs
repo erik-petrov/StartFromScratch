@@ -1,10 +1,14 @@
-﻿using StartFromScratch.Models;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using StartFromScratch.Data;
+using StartFromScratch.Models;
 using System.Diagnostics;
 
 namespace bruh.Database
 {
     public class DbInitializer
     {
+        
         public static void Initialize(ApplicationContext context)
         {
             if (context.RealEstates.Any())

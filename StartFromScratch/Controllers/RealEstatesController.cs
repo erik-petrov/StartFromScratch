@@ -131,7 +131,7 @@ namespace StartFromScratch.Controllers
         [Authorize(Policy = "adminOnly")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Address,Area,Cost")] RealEstate realEstate)
+        public async Task<IActionResult> Create([Bind("Id,Address,Area,Cost,ImageLink")] RealEstate realEstate)
         {
             if (ModelState.IsValid)
             {
@@ -165,7 +165,7 @@ namespace StartFromScratch.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "adminOnly")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Address,Area,Cost")] RealEstate realEstate)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Address,Area,Cost,ImageLink")] RealEstate realEstate)
         {
             if (id != realEstate.Id)
             {
@@ -273,7 +273,9 @@ namespace StartFromScratch.Controllers
                 Buy b = new(realEstate, children, details);
                 _context.Buys.Add(b);
             }
-            sendEmail("You've bought a house!", $"Congratulations on your newly bought house with an area of: {realEstate.Area} at {realEstate.Address}!", User.Identity.Name);
+            MailSender.SendEmail("You've bought a house!",
+                $"Congratulations on your newly bought house with an area of: " +
+                $"{realEstate.Area} at {realEstate.Address}!", User.Identity.Name, DateTime.Now.AddHours(1), DateTime.Now.AddHours(3));
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(UserIndex));
         }
@@ -281,28 +283,6 @@ namespace StartFromScratch.Controllers
         private bool RealEstateExists(int id)
         {
             return _context.RealEstates.Any(e => e.Id == id);
-        }
-        private void sendEmail(string Subject, string Body, string recipient)
-        {
-            try
-            {
-                using (SmtpClient client = new SmtpClient("smtp.gmail.com") { Port = 587, Credentials = new NetworkCredential(username, password), EnableSsl = true })
-                {
-                    var mailMessage = new MailMessage
-                    {
-                        From = new MailAddress("amogusSussyemail@gmail.com"),
-                        Subject = Subject,
-                        Body = Body,
-                        IsBodyHtml = true,
-                    };
-                    mailMessage.To.Add(recipient);
-                    client.Send(mailMessage);
-                }
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
         }
     }
 }

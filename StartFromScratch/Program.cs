@@ -1,5 +1,6 @@
 using bruh.Database;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using StartFromScratch.Areas.Identity.Data;
 using StartFromScratch.Data;
@@ -17,7 +18,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddIdentity<StartFromScratchUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
 .AddDefaultUI()
 .AddEntityFrameworkStores<ApplicationDbContext>()
-.AddDefaultTokenProviders();
+.AddDefaultTokenProviders()
+.AddRoleManager<RoleManager<IdentityRole>>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
@@ -25,6 +27,7 @@ builder.Services.AddAuthorization(options => {
     options.AddPolicy("adminOnly",
     builder => builder.RequireRole("Admin"));
 });
+
 
 var app = builder.Build();
 
@@ -58,3 +61,5 @@ using(ApplicationContext db = new ApplicationContext())
     DbInitializer.Initialize(db);
 }
 app.Run();
+
+
