@@ -33,6 +33,27 @@ namespace StartFromScratch.Controllers
             return ids;
         }
 
+        async void CheckForRented()
+        {
+            var rents = _context.Rents.ToList();
+            if (rents.Count == 0) return;
+            foreach (var item in rents)
+            {
+                if(DateTime.Compare(item.From, DateTime.Now) >= 0)
+                {
+                    rents.Remove(item);
+                }
+            }
+            await _context.SaveChangesAsync();
+        }
+
+        [Authorize(Policy = "adminOnly")]
+        public async Task<IActionResult> FakeMail()
+        {
+            MailSender.SendEmail("Test", "Test", User.Identity.Name, DateTime.Now, DateTime.Now.AddDays(4));
+            return View("Index", await _context.RealEstates.ToListAsync());
+        }
+
         // GET: RealEstates
         [Authorize(Policy = "adminOnly")]
         public async Task<IActionResult> Index()
@@ -42,6 +63,7 @@ namespace StartFromScratch.Controllers
 
         public async Task<IActionResult> UserIndex()
         {
+            CheckForRented();
             var ids = await getIds();
             return View(await _context.RealEstates.Where(x => !ids.Contains(x.Id)).ToListAsync());
         }
@@ -66,7 +88,6 @@ namespace StartFromScratch.Controllers
 
             return View(realEstate);
         }
-
 
         // GET: RealEstates/Details/5
         [Authorize(Policy = "adminOnly")]
@@ -101,7 +122,7 @@ namespace StartFromScratch.Controllers
             var rent = new Rent(realEstate, PaymentType.Daily, DateTime.Now, DateTime.Now);
             return View(rent);
         }
-        public async Task<IActionResult> Osta(int? id)
+        public async Task<IActionResult> Osta(int? id, DateTime meetup)
         {
             if (id == null || _context.RealEstates == null)
             {
@@ -114,7 +135,7 @@ namespace StartFromScratch.Controllers
             {
                 return NotFound();
             }
-            var buy = new Buy(realEstate, 0, "");
+            var buy = new Buy(realEstate, meetup);
             return View(buy);
         }
 
@@ -253,14 +274,21 @@ namespace StartFromScratch.Controllers
                 Rent r = new(realEstate, (PaymentType)payment, from, until);
                 _context.Rents.Add(r);
             }
+            MailSender.SendEmail("You've rented a house!",
+                $"Congratulations on your newly rented house with an area of: " +
+                $"{realEstate.Area} at {realEstate.Address}!", User.Identity.Name, DateTime.Now.AddHours(1), DateTime.Now.AddHours(3));
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(UserIndex));
         }
         [HttpPost, ActionName("Osta")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Osta(int id, string details, int children, string email)
+        public async Task<IActionResult> Osta(int id, string details, DateTime meetup)
         {
+            if (DateTime.Compare(meetup, DateTime.Now) < 0)
+            {
+                return RedirectToAction(nameof(UserIndex));
+            }
             if (_context.RealEstates == null)
             {
                 return Problem("Entity set 'ApplicationContext.RealEstates'  is null.");
@@ -270,7 +298,7 @@ namespace StartFromScratch.Controllers
             {
                 System.Diagnostics.Debug.WriteLine("real estate exists");
                 _context.RealEstates.Remove(realEstate);
-                Buy b = new(realEstate, children, details);
+                Buy b = new(realEstate, meetup);
                 _context.Buys.Add(b);
             }
             MailSender.SendEmail("You've bought a house!",

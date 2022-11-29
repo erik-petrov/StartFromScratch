@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StartFromScratch.Data;
 
@@ -11,9 +12,10 @@ using StartFromScratch.Data;
 namespace StartFromScratch.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221129085206_changeToDate")]
+    partial class changeToDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -276,15 +278,18 @@ namespace StartFromScratch.Data.Migrations
                     b.Property<float>("Cost")
                         .HasColumnType("real");
 
+                    b.Property<DateTime>("From")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("ImageLink")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Meetup")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("StartFromScratchUserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Until")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

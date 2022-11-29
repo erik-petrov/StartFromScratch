@@ -60,20 +60,17 @@ namespace StartFromScratch.Models
     }
     public class Buy : RealEstate
     {
-        public int ChildrenAmount { get; set; }
-        public string Details { get; set; }
-        public Buy(int id, string address, float area, float cost, int children, string details, string link) : base(id, address, area, cost, link)
+        public DateTime Meetup { get; set; }
+        public Buy(int id, string address, float area, float cost, string link, DateTime meetup) : base(id, address, area, cost, link)
         {
-            Details = details;
-            ChildrenAmount = children;
+            Meetup = meetup;
         }
-        public Buy(RealEstate house, int children, string details)
+        public Buy(RealEstate house, DateTime meetup)
         {
             Address = house.Address;
             Area = house.Area;
             Cost = house.Cost;
-            Details = details;
-            ChildrenAmount = children;
+            Meetup = meetup;
             ImageLink = house.ImageLink;
         }
         public Buy() { }

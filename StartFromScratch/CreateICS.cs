@@ -12,7 +12,6 @@ namespace StartFromScratch
             string Summary = summary;
             string Location = "TEST LOC";
             string Description = desc;
-            string FileName = "BuyingInvitation";
 
             //create a new stringbuilder instance
             StringBuilder sb = new StringBuilder();
@@ -37,22 +36,20 @@ namespace StartFromScratch
             sb.AppendLine("BEGIN:VEVENT");
 
             //with time zone specified
-            sb.AppendLine("DTSTAMP;" + DateTime.Now.To);
-            sb.AppendLine("UID;" + DateTime.Now.ToUniversalTime()+"superrandomstring-2281337"+new Random().Next(10000000));
+            sb.AppendLine("DTSTAMP:" + DateTime.Now.ToUniversalTime().ToString("yyyyMMddTHHmmssZ"));
+            sb.AppendLine("UID:" + DateTime.Now.ToUniversalTime().ToString("yyMMddTHHmmssZ")+"superrandomstring-2281337"+new Random().Next(10000000));
             sb.AppendLine("DTSTART;TZID=Europe/Tallinn:" + DateStart.ToString("yyyyMMddTHHmm00"));
             sb.AppendLine("DTEND;TZID=Europe/Tallinn:" + DateEnd.ToString("yyyyMMddTHHmm00"));
-            //or without
-            sb.AppendLine("DTSTART:" + DateStart.ToString("yyyyMMddTHHmm00"));
-            sb.AppendLine("DTEND:" + DateEnd.ToString("yyyyMMddTHHmm00"));
 
-            sb.AppendLine("SUMMARY:" + Summary + "");
-            sb.AppendLine("LOCATION:" + Location + "");
-            sb.AppendLine("DESCRIPTION:" + Description + "");
+            sb.AppendLine("SUMMARY:" + Summary);
+            sb.AppendLine("LOCATION:" + Location);
+            sb.AppendLine("DESCRIPTION:" + Description);
             sb.AppendLine("PRIORITY:3");
             sb.AppendLine("END:VEVENT");
 
             //end calendar item
             sb.AppendLine("END:VCALENDAR");
+            sb.Replace("\n", "<br>");
 
             return sb.ToString();
         }

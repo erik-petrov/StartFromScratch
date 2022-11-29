@@ -30,6 +30,7 @@ namespace StartFromScratch
             SmtpServer.Credentials = new NetworkCredential("testamogus123@hotmail.com", "AmogusGaming228");
             SmtpServer.EnableSsl = true;
             SmtpServer.Send(mailMessage);
+            mailMessage.Dispose();
         }
     }
 }
