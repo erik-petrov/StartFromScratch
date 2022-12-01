@@ -42,14 +42,30 @@ namespace StartFromScratch.Controllers
 
             return View(cons);
         }
+
+        public async Task<IActionResult> ConsultationIndex()
+        {
+            if ( _context.Consultations == null)
+            {
+                return NotFound();
+            }
+
+            return View(await _context.Consultations.ToListAsync());
+        }
+
         public async Task<IActionResult> ConsultationForm()
         {
             return View();
         }
-        public async Task<IActionResult> SendConsultationForm([Bind("StartTime, EndTime, Agent, Description")] Consultation cons)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConsultationForm([Bind("StartTime, EndTime, Description")] Consultation cons)
         {
             if (ModelState.IsValid)
             {
+                if (DateTime.Compare(cons.StartTime, DateTime.Now) < 0)
+                    return View();
+
                 _context.Add(cons);
                 await _context.SaveChangesAsync();
             }
