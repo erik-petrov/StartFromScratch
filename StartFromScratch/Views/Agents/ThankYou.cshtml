@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1>Äitah!</h1>
+
+<div class="text-center">
+    <h1 class="display-4">Teie konsulteerimis aeg on salvestatud! Palun oota...</h1>
+</div>
+
+<script>
+    setTimeout(function () {
+    window.location.replace('@Url.Action("Index", "Home")')
+}, 2500);
+</script>

@@ -91,12 +91,10 @@ namespace StartFromScratch.Models
     }
     public class Consultation
     {
-        public Consultation(DateTime startTime, DateTime endTime, DateOnly date, Agent agent, User user, string description)
+        public Consultation(DateTime startTime, DateTime endTime, User user, string description)
         {
             StartTime = startTime;
             EndTime = endTime;
-            Date = date;
-            Agent = agent;
             User = user;
             Description = description;
         }
@@ -105,9 +103,7 @@ namespace StartFromScratch.Models
         public int Id { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-        public DateOnly Date { get; set; }
-        public Agent Agent { get; set; }
-        public User User { get; set; }
+        public User? User { get; set; }
         public string Description { get; set; }
     }
 }

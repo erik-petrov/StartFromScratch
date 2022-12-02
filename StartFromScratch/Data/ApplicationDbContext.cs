@@ -25,6 +25,7 @@ namespace StartFromScratch.Data
 
         }
         public DbSet<StartFromScratch.Models.Agent> Agent { get; set; }
+        public DbSet<StartFromScratch.Models.Consultation> Consultation { get; set; }
     }
     public class DateOnlyConverter : ValueConverter<DateOnly, DateTime>
     {

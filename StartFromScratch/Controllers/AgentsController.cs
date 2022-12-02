@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using bruh.Database;
@@ -27,7 +28,7 @@ namespace StartFromScratch.Controllers
         {
             return View(await _context.Agents.ToListAsync());
         }
-        public async Task<IActionResult> Consultation(int? id)
+        public async Task<IActionResult> CConsultation(int? id)
         {
             if (id == null || _context.Consultations == null)
             {
@@ -41,6 +42,65 @@ namespace StartFromScratch.Controllers
             }
 
             return View(cons);
+        }
+
+        #region consultations
+        // GET: Agents/Delete/5
+        [Authorize(Policy = "adminOnly")]
+        public async Task<IActionResult> CDelete(int? id)
+        {
+            if (id == null || _context.Consultations == null)
+            {
+                return NotFound();
+            }
+
+            var agent = await _context.Consultations
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (agent == null)
+            {
+                return NotFound();
+            }
+
+            return View(agent);
+        }
+
+        // POST: Agents/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Policy = "adminOnly")]
+        public async Task<IActionResult> CDeleteConfirmed(int id)
+        {
+            if (_context.Agents == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Agent'  is null.");
+            }
+            var agent = await _context.Consultations.FindAsync(id);
+            if (agent != null)
+            {
+                _context.Consultations.Remove(agent);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Agents/Details/5
+        [Authorize(Policy = "adminOnly")]
+        public async Task<IActionResult> CDetails(int? id)
+        {
+            if (id == null || _context.Consultations == null)
+            {
+                return NotFound();
+            }
+
+            var agent = await _context.Consultations
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (agent == null)
+            {
+                return NotFound();
+            }
+
+            return View(agent);
         }
 
         public async Task<IActionResult> ConsultationIndex()
@@ -59,19 +119,24 @@ namespace StartFromScratch.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ConsultationForm([Bind("StartTime, EndTime, Description")] Consultation cons)
+        public async Task<IActionResult> ConsultationForm([Bind("StartTime, Description, User")] Consultation cons)
         {
             if (ModelState.IsValid)
             {
-                if (DateTime.Compare(cons.StartTime, DateTime.Now) < 0)
+                if (!(DateTime.Compare(cons.StartTime, DateTime.Now) > 0))
                     return View();
 
+                cons.EndTime = cons.StartTime.AddHours(2);
                 _context.Add(cons);
                 await _context.SaveChangesAsync();
+                MailSender.SendEmail("Teise konsultatsioon aeg", "Tere!\nOleme teadlikuks saanud et sa tahad konsulteerida!\n" +
+                "Teie aeg on " + cons.StartTime.ToString("f") + ". Ärge unustage!", User.Identity.Name,
+                cons.StartTime,
+                cons.EndTime);
             }
-            return View();
+            return View("ThankYou");
         }
-
+        #endregion
         // GET: Agents
         [Authorize(Policy = "adminOnly")]
         public async Task<IActionResult> Index()

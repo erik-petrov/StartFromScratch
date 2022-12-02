@@ -23,15 +23,6 @@ namespace StartFromScratch
             sb.AppendLine("CALSCALE:GREGORIAN");
             sb.AppendLine("METHOD:PUBLISH");
 
-            //create a time zone if needed, TZID to be used in the event itself
-            sb.AppendLine("BEGIN:VTIMEZONE");
-            sb.AppendLine("TZID:Europe/Tallinn");
-            sb.AppendLine("BEGIN:STANDARD");
-            sb.AppendLine("TZOFFSETTO:+0200");
-            sb.AppendLine("TZOFFSETFROM:+0200");
-            sb.AppendLine("END:STANDARD");
-            sb.AppendLine("END:VTIMEZONE");
-
             //add the event
             sb.AppendLine("BEGIN:VEVENT");
 
@@ -44,12 +35,10 @@ namespace StartFromScratch
             sb.AppendLine("SUMMARY:" + Summary);
             sb.AppendLine("LOCATION:" + Location);
             sb.AppendLine("DESCRIPTION:" + Description);
-            sb.AppendLine("PRIORITY:3");
             sb.AppendLine("END:VEVENT");
 
             //end calendar item
             sb.AppendLine("END:VCALENDAR");
-            sb.Replace("\n", "<br>");
 
             return sb.ToString();
         }
