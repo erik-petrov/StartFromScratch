@@ -1,11 +1,21 @@
+/*
+    palette:
+    #E5D9B6
+    #A4BE7B
+    #5F8D4E
+    #285430
+*/
+
 html {
-  font-size: 14px;
+    font-size: 14px;
+    background-color: #E5D9B6;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+        background-color: #E5D9B6;
+    }
 }
 
 html {
@@ -14,5 +24,17 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #E5D9B6;
+}
+
+.navbar{
+    background-color: #A4BE7B;
+}
+
+.border-bottom {
+    background-color: #A4BE7B !important;
+}
+.table th, td {
+    border-color: #285430;
 }
