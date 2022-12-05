@@ -1,12 +1,12 @@
 ﻿@model StartFromScratch.Models.Consultation
 
 @{
-    ViewData["Title"] = "View";
+    ViewData["Title"] = "Kustuta";
 }
 
-<h1>View</h1>
+<h1>Kustuta</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Kas olete kindel, et soovite selle kustutada?</h3>
 <div>
     <h4>Consultation</h4>
     <hr />
@@ -33,7 +33,7 @@
     
     <form asp-action="View">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Kustuta" class="btn btn-danger" /> |
+        <a asp-action="Index">Tagasi</a>
     </form>
 </div>

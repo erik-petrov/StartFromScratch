@@ -27,13 +27,13 @@
                         @if (this.User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="RealEstates" asp-action="Index">RealEstates</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="RealEstates" asp-action="Index">Kinnisvarad</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Agents" asp-action="Index">Agents</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Agents" asp-action="Index">Agentid</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Agents" asp-action="ConsultationIndex">Consultations</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Agents" asp-action="ConsultationIndex">Konsultatsioonid</a>
                             </li>
                         }
                         else if (SignInManager.IsSignedIn(User))

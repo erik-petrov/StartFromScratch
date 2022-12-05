@@ -1,13 +1,13 @@
 ﻿@model StartFromScratch.Models.Consultation
 
 @{
-    ViewData["Title"] = "View";
+    ViewData["Title"] = "Detaalid";
 }
 
-<h1>View</h1>
+<h1>Detaalid</h1>
 
 <div>
-    <h4>Consultation</h4>
+    <h4>Konsultatsioon</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -31,6 +31,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Muuda</a> |
+    <a asp-action="Index">Tagasi</a>
 </div>

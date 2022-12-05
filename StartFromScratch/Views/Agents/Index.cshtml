@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<StartFromScratch.Models.Agent>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Agentid";
 }
 
-<h1>Index</h1>
+<h1>Agentid</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Loo uus</a>
 </p>
 <table class="table">
     <thead>
@@ -49,8 +49,8 @@
                 @Html.DisplayFor(modelItem => item.YearsInField)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.Id">Detaalid</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Kustuta</a>
             </td>
         </tr>
 }

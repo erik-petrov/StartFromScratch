@@ -1,4 +1,5 @@
 ﻿using bruh.Database;
+using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 
 namespace StartFromScratch.Models
@@ -82,10 +83,14 @@ namespace StartFromScratch.Models
         public Agent() { }
 
         public int Id { get; set; }
+        [Display(Name = "Täis nimi")]
         public string FullName { get; set; }
         public string Email { get; set; }
+        [Display(Name = "Telefoninumber")]
         public string Phone { get; set; }
+        [Display(Name = "Salasõna")]
         public string Password { get; set; }
+        [Display(Name = "Aastat töötab")]
         public int YearsInField { get; set; }
         public bool IsAvailable() => throw new NotImplementedException();
     }
@@ -101,9 +106,11 @@ namespace StartFromScratch.Models
         public Consultation() {}
 
         public int Id { get; set; }
+        [Display(Name = "Algusaeg")]
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public User? User { get; set; }
+        [Display(Name = "Kirjeldus")]
         public string Description { get; set; }
     }
 }

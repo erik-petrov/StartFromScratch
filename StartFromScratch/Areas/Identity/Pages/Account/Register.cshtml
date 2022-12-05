@@ -10,7 +10,7 @@
 <div class="row">
     <div class="col-md-4">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Loo uus kasutaja.</h2>
+            <h2 id="specialText"><span>Registreerige uus kasutaja.</span></h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-floating">
@@ -33,7 +33,7 @@
                 <label asp-for="Input.ConfirmPassword">Salasõna</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <div class="form-group">  
+            <div class="form-floating">  
                 <label asp-for="Input.Name">Rolli</label>  
                 <select asp-for="Input.Name" class="form-control" asp-items='new SelectList(roles,"Id","Name")'>  
                 </select>  
