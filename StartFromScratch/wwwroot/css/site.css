@@ -52,7 +52,24 @@ body {
     border-color: #5F8D4E;
 }
 
-.btn-primary:hover {
+.btn-primary::selection {
+    background-color: #5F8D4E;
+    border-color: #5F8D4E;
+}
+
+.btn-primary:hover, btn-check:focus + .btn-primary, .btn-primary:focus, .btn-primary:disabled, .btn-primary.disabled {
     background-color: #285430;
     border-color: #285430;
+}
+
+a {
+    color: #285430;
+}
+
+.border-top {
+    border-top: 1px solid #285430;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #285430;
 }
